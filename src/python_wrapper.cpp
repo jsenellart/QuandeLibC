@@ -153,23 +153,7 @@ PYBIND11_MODULE(quandelibc, m) {
     m.attr("npos") = py::int_(fs_npos);
 
     py::class_<annotation>(m, "Annotation")
-        .def(py::init<>(), "empty annotation constructor")
-        .def(py::init<const char *>(), "constructor from string", py::arg("s"))
-        .def("__getitem__",
-             [=](annotation const& a, std::string const& name) -> py::object {
-                 if (a.has_tag(name)) {
-                     return py::cast(a.at(name));
-                 }
-                 return py::object(py::cast(nullptr));})
-         .def("__iter__",
-                 [](const annotation &s) { return py::make_iterator(s.begin(), s.end()); },
-                 py::keep_alive<0, 1>())
-        .def("__str__", &annotation::to_str)
-        .def("str_value", &annotation::str_value, "give string representation of the tag value", py::arg("tag"))
-        .def("__eq__", &annotation::operator==, "compare two annotations", py::arg("b"))
-        .def("__contains__", &annotation::contains, "check if element is part of annotation", py::arg("k"))
-        .def("get", &annotation::get, "retrieve an annotation or a default value",
-             py::arg("k"), py::arg("default"));
+        .def(py::init<>(), "empty annotation constructor");
 
     py::class_<fockstate>(m, "FockState")
         .def(py::init<>(),
@@ -180,14 +164,8 @@ PYBIND11_MODULE(quandelibc, m) {
              "vacuum state constructor, 0 photons")
         .def(py::init<const char *>(),
              "constructor from string representation", py::arg("s"))
-         .def(py::init<const char *, std::map<int, std::list<std::string>>>(),
-             "constructor from string representation and annotation map",
-             py::arg("s"), py::arg("mode_annotation"))
         .def(py::init<std::vector<int>>(),
              "constructor from int vector", py::arg("fs_vec"))
-        .def(py::init<std::vector<int>, std::map<int, std::list<std::string>>>(),
-             "constructor from int vector and annotation map",
-             py::arg("fs_vec"), py::arg("mode_annotation"))
         .def("__getitem__", &fockstate::operator[], py::arg("mk"))
         .def("__getitem__", &get_slice)
         .def("set_slice", &set_slice)
