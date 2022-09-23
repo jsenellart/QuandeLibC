@@ -82,7 +82,7 @@ class fockstate {
         }
 
         /** annotation specific functions **/
-        bool has_annotations() const { return !_annotation_map.empty(); }
+        bool has_annotations() const { return false; }
         bool has_polarization() const;
         void clear_annotations();
         std::list<annotation> get_mode_annotations(int) const;
@@ -139,7 +139,7 @@ class fockstate {
         char *_code;
         bool _owned_data;
         /* annotations of photons in different modes */
-        map_m_lannot _annotation_map;
+        // map_m_lannot _annotation_map;
 
         void _parse_str(const char *str);
         void _set_annotations(const std::map<int, std::list<std::string>> &annotations);
